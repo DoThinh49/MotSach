@@ -21,7 +21,7 @@ export default function Sighnup() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const { user, isLoading, register } = useAuthStore();
+  const { user, isLoading, register, token } = useAuthStore();
 
   const router = useRouter();
 
@@ -85,7 +85,7 @@ export default function Sighnup() {
                 />
               </View>
             </View>
-            /{/* PASSWORD INPUT */}
+            {/* PASSWORD INPUT */}
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Mật khẩu</Text>
               <View style={styles.inputContainer}>
