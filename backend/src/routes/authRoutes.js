@@ -1,3 +1,4 @@
+// File: backend/src/routes/authRoutes.js
 import express from "express";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
