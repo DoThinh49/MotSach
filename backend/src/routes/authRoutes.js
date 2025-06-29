@@ -49,7 +49,7 @@ router.post("/register", async (req, res) => {
       email,
       username,
       password,
-      profileImage: "",
+      profileImage,
     });
 
     await user.save();
@@ -59,7 +59,7 @@ router.post("/register", async (req, res) => {
     res.status(201).json({
       token,
       user: {
-        _id: user.id,
+        id: user._id,
         username: user.username,
         email: user.email,
         profileImage: user.profileImage,
@@ -95,7 +95,7 @@ router.post("/login", async (req, res) => {
     res.status(200).json({
       token,
       user: {
-        _id: user.id,
+        id: user._id,
         username: user.username,
         email: user.email,
         profileImage: user.profileImage,
