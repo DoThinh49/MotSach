@@ -47,9 +47,9 @@ export default function Home() {
         refresh || pageNum === 1
           ? data.books
           : Array.from(
-              new Set([...books, ...data.books].map((book) => book.id))
+              new Set([...books, ...data.books].map((book) => book._id))
             ).map((id) =>
-              [...books, ...data.books].find((book) => book.id === id)
+              [...books, ...data.books].find((book) => book._id === id)
             );
 
       setBooks(uniqueBooks);
@@ -130,7 +130,7 @@ export default function Home() {
       <FlatList
         data={books}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
         refreshControl={
