@@ -6,12 +6,18 @@ import {
   Platform,
   ScrollView,
   TextInput,
+  TouchableOpacity,
+  Alert,
+  Image,
 } from "react-native";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import styles from "../../assets/styles/create.styles";
 import { Ionicons } from "@expo/vector-icons";
 import COLORS from "../../constants/colors";
+
+import * as FileSystem from "expo-file-system";
+import * as ImagePicker from "expo-image-picker";
 
 export default function Create() {
   const [title, setTitle] = useState("");
@@ -23,9 +29,69 @@ export default function Create() {
 
   const router = useRouter();
 
-  const pickImage = async () => {};
+  const pickImage = async () => {
+    try {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (status !== "granted") {
+          Alert.alert(
+            "Thiếu quyền truy cập",
+            "Bạn cần cấp quyền truy cập ảnh để tải hình lên"
+          );
+          return;
+        }
+      }
+
+      // launch image library
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: "images",
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.5, // lower quality for smaller base64
+        base64: true,
+      });
+
+      if (!result.canceled) {
+        setImage(result.assets[0].uri);
+
+        if (result.assets[0].base64) {
+          setImageBase64(result.assets[0].base64);
+        } else {
+          // otherwise, convert to base64
+          const base64 = await FileSystem.readAsStringAsync(
+            result.assets[0].uri,
+            {
+              encoding: FileSystem.EncodingType.Base64,
+            }
+          );
+          setImageBase64(base64);
+        }
+      }
+    } catch (error) {}
+  };
 
   const handleSubmit = async () => {};
+  const renderRatingPicker = () => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <TouchableOpacity
+          key={i}
+          onPress={() => setRating(i)}
+          style={styles.starButton}
+        >
+          <Ionicons
+            name={i <= rating ? "star" : "star-outline"}
+            size={32}
+            color={i <= rating ? "#f4b400" : COLORS.textSecondary}
+          />
+        </TouchableOpacity>
+      );
+    }
+    return <View style={styles.ratingContainer}>{stars}</View>;
+  };
 
   return (
     <KeyboardAvoidingView
@@ -57,12 +123,36 @@ export default function Create() {
                 />
                 <TextInput
                   style={styles.input}
-                  placeholder="Enter book title"
+                  placeholder="Nhập tên sách"
                   placeholderTextColor={COLORS.placeholderText}
                   value={title}
                   onChangeText={setTitle}
                 />
               </View>
+            </View>
+            {/* RATING */}
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Đánh giá của bạn</Text>
+              {renderRatingPicker()}
+            </View>
+
+            {/*IMAGE*/}
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>Ảnh bìa sách</Text>
+              <TouchableOpacity style={styles.imagePicker} onPress={pickImage}>
+                {image ? (
+                  <Image source={{ uri: image }} style={styles.previewImage} />
+                ) : (
+                  <View style={styles.placeholderContainer}>
+                    <Ionicons
+                      name="image-outline"
+                      size={40}
+                      color={COLORS.textSecondary}
+                    />
+                    <Text style={styles.placeholderText}>Nhấn để chọn ảnh</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
             </View>
           </View>
         </View>
