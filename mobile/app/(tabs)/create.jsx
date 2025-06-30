@@ -77,7 +77,7 @@ export default function Create() {
       }
     } catch (error) {
       console.error("Error picking image", error);
-      Alert.alert("Error", "There was a problem selecting your image");
+      Alert.alert("Lỗi", "Đã xảy ra sự cố khi chọn ảnh của bạn");
     }
   };
 
@@ -115,7 +115,7 @@ export default function Create() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Something went wrong");
 
-      Alert.alert("Success", "Your book recommendation has been posted!");
+      Alert.alert("Thành công", "Sách của bạn đã được đăng!");
       setTitle("");
       setCaption("");
       setRating(3);
