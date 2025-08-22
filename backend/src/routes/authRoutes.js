@@ -28,7 +28,7 @@ router.post("/register", async (req, res) => {
     if (username.length < 3) {
       return res
         .status(400)
-        .json({ message: "Username phải có ít nhất 3 ký tự" });
+        .json({ message: "Tên người dùng phải có ít nhất 3 ký tự" });
     }
 
     //kiểm tra xem người dùng đã tồn tại chưa

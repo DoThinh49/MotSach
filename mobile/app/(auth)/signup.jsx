@@ -47,7 +47,7 @@ export default function Sighnup() {
           <View style={styles.formContainer}>
             {/* USERNAME INPUT */}
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Tên đăng nhập</Text>
+              <Text style={styles.label}>Tên người dùng</Text>
               <View style={styles.inputContainer}>
                 <Ionicons
                   name="person-outline"
@@ -57,7 +57,7 @@ export default function Sighnup() {
                 />
                 <TextInput
                   style={styles.input}
-                  placeholder="usernamhehe"
+                  placeholder="Tên người dùng"
                   placeholderTextColor={COLORS.placeholderText}
                   value={username}
                   onChangeText={setUsername}
